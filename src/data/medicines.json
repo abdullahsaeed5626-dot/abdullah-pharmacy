@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Panadol",
+    "category": "Tablet",
+    "price": 50,
+    "stock": 100
+  },
+  {
+    "id": 2,
+    "name": "Brufen",
+    "category": "Tablet",
+    "price": 80,
+    "stock": 60
+  },
+  {
+    "id": 3,
+    "name": "Augmentin",
+    "category": "Tablet",
+    "price": 250,
+    "stock": 40
+  },
+  {
+    "id": 4,
+    "name": "Disprin",
+    "category": "Tablet",
+    "price": 30,
+    "stock": 80
+  }
+]
