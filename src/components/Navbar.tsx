@@ -77,20 +77,22 @@ function Navbar() {
       borderBottomWidth="1px"
       borderColor="blue.700"
     >
-      <Flex align="center" justify="space-between">
+      <Flex align="center" justify="center" position="relative">
         {/* Mobile Menu Button */}
         <IconButton
           display={{ base: "flex", md: "none" }}
           variant="outline"
           color="white"
           aria-label="Open menu"
+          position="absolute"
+          left={0}
           onClick={() => setIsOpen(true)}
         >
           <Menu size={22} />
         </IconButton>
 
         {/* Pharmacy Logo + Name */}
-        <Flex align="center" gap={3} mx="auto">
+        <Flex align="center" gap={3}>
           <Box
             display="flex"
             alignItems="center"
