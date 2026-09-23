@@ -31,7 +31,7 @@ function App() {
         </Box>
 
         {/* Page Content */}
-        <Box flex="1" minW="0" overflowY="auto" overflowX="hidden">
+        <Box flex="1" minW="0" overflowY="auto" overflowX="hidden" bg="white">
           <Routes>
             <Route path="/" element={<Dashboard />} />
 
