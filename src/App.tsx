@@ -22,7 +22,11 @@ function App() {
       {/* Main Layout */}
       <Flex height="calc(100vh - 81px)">
         {/* Sidebar */}
-        <Box className="no-print" flexShrink={0}>
+        <Box
+          className="no-print"
+          display={{ base: "none", md: "block" }}
+          flexShrink={0}
+        >
           <Sidebar />
         </Box>
 
