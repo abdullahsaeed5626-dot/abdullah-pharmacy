@@ -77,7 +77,7 @@ function Navbar() {
       borderBottomWidth="1px"
       borderColor="blue.700"
     >
-      <Flex align="center" justify="center" position="relative">
+      <Flex align="center" position="relative" minH="50px">
         {/* Mobile Menu Button */}
         <IconButton
           display={{ base: "flex", md: "none" }}
@@ -85,14 +85,17 @@ function Navbar() {
           color="white"
           aria-label="Open menu"
           position="absolute"
-          left={0}
+          left="0"
+          top="50%"
+          transform="translateY(-50%)"
+          zIndex={2}
           onClick={() => setIsOpen(true)}
         >
           <Menu size={22} />
         </IconButton>
 
         {/* Pharmacy Logo + Name */}
-        <Flex align="center" gap={3}>
+        <Flex align="center" gap={3} width="100%" justify="center">
           <Box
             display="flex"
             alignItems="center"
@@ -113,10 +116,9 @@ function Navbar() {
             </Text>
           </Box>
         </Flex>
-
-        {/* Empty space on mobile to keep title centered */}
-        <Box display={{ base: "block", md: "none" }} width="40px" />
       </Flex>
+      {/* Empty space on mobile to keep title centered */}
+      <Box display={{ base: "block", md: "none" }} width="40px" />
 
       {/* Mobile Drawer */}
       <Drawer.Root
