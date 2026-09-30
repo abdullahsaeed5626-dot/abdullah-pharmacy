@@ -34,7 +34,12 @@ function Navbar() {
       borderBottomWidth="1px"
       borderColor="blue.700"
     >
-      <Flex align="center" position="relative" minH="50px">
+      <Flex
+        align="center"
+        position="relative"
+        minH="50px"
+        justifyContent="center"
+      >
         {/* Mobile Menu Button */}
         <IconButton
           display={{ base: "flex", md: "none" }}
