@@ -110,7 +110,26 @@ code {
   background: var(--code-bg);
 }
 @media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Hide everything marked no-print */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Thermal Receipt Page Dimensions */
   @page {
-    margin: 8mm;
+    size: 80mm auto; /* Standard thermal receipt size (80mm width) */
+    margin: 0;
+  }
+
+  .print-receipt {
+    width: 80mm !important;
+    padding: 8mm !important;
+    margin: 0 auto !important;
+    font-family: 'Courier New', Courier, monospace, sans-serif !important;
   }
 }

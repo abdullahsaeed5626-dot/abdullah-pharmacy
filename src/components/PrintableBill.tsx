@@ -1,95 +1,170 @@
-import { Box, Heading, Table, Text, Flex } from "@chakra-ui/react";
+import { Box, Text, Flex, Stack, Separator, Table } from "@chakra-ui/react";
 
-import type { Sale } from "../context/StoreContext";
+export type CartItem = {
+  id: string | number;
+  name: string;
+  batchNo?: string;
+  expDate?: string;
+  price: number;
+  quantity: number;
+};
+
+export type Sale = {
+  id: string | number;
+  customerName?: string;
+  customerPhone?: string;
+  paymentMethod?: string;
+  createdAt?: string | Date;
+  cart: CartItem[];
+  subtotal: number;
+  discount: number;
+  discountAmount: number;
+  finalTotal: number;
+};
 
 type Props = {
   sale: Sale;
 };
 
 function PrintableBill({ sale }: Props) {
-  const now = new Date();
-
-  const date = now.toLocaleDateString();
-
-  const time = now.toLocaleTimeString([], {
+  const saleDate = sale.createdAt ? new Date(sale.createdAt) : new Date();
+  const formattedDate = saleDate.toLocaleDateString();
+  const formattedTime = saleDate.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
   });
 
   return (
-    <Box className="print-receipt" minW="0" width="100%" overflow="hidden">
-      {/* Pharmacy Header */}
-      <Box textAlign="center" mb={6}>
-        <Heading size="lg" color="black">
+    <Box
+      className="print-receipt"
+      width={{ base: "100%", md: "80mm" }}
+      mx="auto"
+      p={4}
+      bg="white"
+      color="black"
+      fontFamily="mono"
+      fontSize="xs"
+    >
+      {/* 1. Header & Store Info */}
+      <Stack gap={1} textAlign="center" mb={3}>
+        <Text fontSize="md" fontWeight="bold" textTransform="uppercase">
           Abdullah Pharmacy
-        </Heading>
-
-        <Text fontSize="sm" color="black" mt={1}>
-          Medical Store & Pharmacy
         </Text>
-
-        <Text fontSize="sm" color="black">
-          Your Health, Our Priority
+        <Text fontSize="2xs">
+          Main Commercial Market, Sector G-9, Islamabad
         </Text>
-      </Box>
+        <Text fontSize="2xs">Phone: +92 307 8029162 | Reg #: PH-89421</Text>
+        <Text fontSize="2xs" fontWeight="semibold" mt={1}>
+          CASH RECEIPT / TAX INVOICE
+        </Text>
+      </Stack>
 
-      {/* Customer Information */}
-      <Box borderBottomWidth="1px" borderColor="blackAlpha.500" pb={3} mb={5}>
-        <Flex justify="space-between" align="start" gap={4} flexWrap="wrap">
-          <Text color="black" wordBreak="break-word">
-            <strong>Customer:</strong> {sale.customerName}
-          </Text>
+      <Separator variant="dashed" borderColor="black" my={2} />
 
-          <Text color="black" wordBreak="break-word">
-            <strong>Bill No:</strong> #{sale.id}
+      {/* 2. Transaction Meta Info */}
+      <Stack gap={1} mb={2}>
+        <Flex justify="space-between">
+          <Text fontWeight="bold">Invoice #:</Text>
+          <Text>{sale.id}</Text>
+        </Flex>
+        <Flex justify="space-between">
+          <Text>Date:</Text>
+          <Text>
+            {formattedDate} {formattedTime}
           </Text>
         </Flex>
-
-        <Flex
-          justify="space-between"
-          align="start"
-          gap={4}
-          flexWrap="wrap"
-          mt={2}
-        >
-          <Text fontSize="sm" color="black">
-            <strong>Date:</strong> {date}
-          </Text>
-
-          <Text fontSize="sm" color="black">
-            <strong>Time:</strong> {time}
+        <Flex justify="space-between">
+          <Text>Customer:</Text>
+          <Text fontWeight="medium">
+            {sale.customerName?.trim() ? sale.customerName : "Walk-in Customer"}
           </Text>
         </Flex>
-      </Box>
+        {sale.customerPhone && (
+          <Flex justify="space-between">
+            <Text>Phone:</Text>
+            <Text>{sale.customerPhone}</Text>
+          </Flex>
+        )}
+        <Flex justify="space-between">
+          <Text>Payment Mode:</Text>
+          <Text>{sale.paymentMethod || "Cash"}</Text>
+        </Flex>
+      </Stack>
 
-      {/* Medicine Table */}
-      <Box width="100%" overflowX="auto">
-        <Table.Root variant="outline" minW="500px">
+      <Separator variant="dashed" borderColor="black" my={2} />
+
+      {/* 3. Itemized Products Table */}
+      <Box mb={2}>
+        <Table.Root size="sm" variant="line">
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader color="black">Medicine</Table.ColumnHeader>
-
-              <Table.ColumnHeader color="black">Price</Table.ColumnHeader>
-
-              <Table.ColumnHeader color="black">Qty</Table.ColumnHeader>
-
-              <Table.ColumnHeader color="black">Total</Table.ColumnHeader>
+              <Table.ColumnHeader
+                color="black"
+                fontSize="xs"
+                p={1}
+                textAlign="left"
+              >
+                Item
+              </Table.ColumnHeader>
+              <Table.ColumnHeader
+                color="black"
+                fontSize="xs"
+                p={1}
+                textAlign="center"
+              >
+                Qty
+              </Table.ColumnHeader>
+              <Table.ColumnHeader
+                color="black"
+                fontSize="xs"
+                p={1}
+                textAlign="right"
+              >
+                Price
+              </Table.ColumnHeader>
+              <Table.ColumnHeader
+                color="black"
+                fontSize="xs"
+                p={1}
+                textAlign="right"
+              >
+                Total
+              </Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
-            {sale.cart.map((medicine) => (
-              <Table.Row key={medicine.id}>
-                <Table.Cell color="black" wordBreak="break-word">
-                  {medicine.name}
+            {sale.cart.map((item) => (
+              <Table.Row key={item.id}>
+                <Table.Cell p={1} verticalAlign="top">
+                  <Text fontWeight="medium" wordBreak="break-word">
+                    {item.name}
+                  </Text>
+                  {(item.batchNo || item.expDate) && (
+                    <Text fontSize="2xs" color="gray.700">
+                      {item.batchNo ? `B: ${item.batchNo} ` : ""}
+                      {item.expDate ? `Exp: ${item.expDate}` : ""}
+                    </Text>
+                  )}
                 </Table.Cell>
-
-                <Table.Cell color="black">Rs. {medicine.price}</Table.Cell>
-
-                <Table.Cell color="black">{medicine.quantity}</Table.Cell>
-
-                <Table.Cell color="black">
-                  Rs. {medicine.price * medicine.quantity}
+                <Table.Cell
+                  p={1}
+                  textAlign="center"
+                  verticalAlign="top"
+                  fontWeight="medium"
+                >
+                  {item.quantity}
+                </Table.Cell>
+                <Table.Cell p={1} textAlign="right" verticalAlign="top">
+                  {item.price.toFixed(2)}
+                </Table.Cell>
+                <Table.Cell
+                  p={1}
+                  textAlign="right"
+                  verticalAlign="top"
+                  fontWeight="semibold"
+                >
+                  {(item.price * item.quantity).toFixed(2)}
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -97,69 +172,45 @@ function PrintableBill({ sale }: Props) {
         </Table.Root>
       </Box>
 
-      {/* Receipt Summary */}
-      <Box mt={6} mx="auto" maxW="400px" width="100%" minW="0">
-        {/* Subtotal */}
-        <Flex
-          justify="space-between"
-          align="center"
-          gap={4}
-          flexWrap="wrap"
-          mb={3}
-        >
-          <Text color="black">Subtotal:</Text>
+      <Separator variant="dashed" borderColor="black" my={2} />
 
-          <Text color="black">Rs. {sale.subtotal}</Text>
+      {/* 4. Calculation Summary */}
+      <Stack gap={1} mb={3}>
+        <Flex justify="space-between">
+          <Text>Subtotal:</Text>
+          <Text>Rs. {sale.subtotal.toFixed(2)}</Text>
         </Flex>
 
-        {/* Discount */}
-        <Flex
-          justify="space-between"
-          align="center"
-          gap={4}
-          flexWrap="wrap"
-          mb={3}
-        >
-          <Text color="black" wordBreak="break-word">
-            Discount ({sale.discount}%):
-          </Text>
-
-          <Text color="black">- Rs. {sale.discountAmount}</Text>
-        </Flex>
-
-        {/* Final Total */}
-        <Box borderTopWidth="1px" borderColor="blackAlpha.500" mt={3} pt={4}>
-          <Flex
-            justify="space-between"
-            align="center"
-            gap={4}
-            flexWrap="wrap"
-            fontWeight="bold"
-            fontSize="lg"
-          >
-            <Text color="black">Final Total:</Text>
-
-            <Text color="black">Rs. {sale.finalTotal}</Text>
+        {sale.discount > 0 && (
+          <Flex justify="space-between">
+            <Text>Discount ({sale.discount}%):</Text>
+            <Text>- Rs. {sale.discountAmount.toFixed(2)}</Text>
           </Flex>
-        </Box>
-      </Box>
+        )}
 
-      {/* Footer */}
-      <Box
-        textAlign="center"
-        mt={8}
-        pt={4}
-        borderTopWidth="1px"
-        borderColor="blackAlpha.500"
-      >
-        <Text fontSize="sm" color="black">
-          Thank you for visiting Abdullah Pharmacy
-        </Text>
+        <Separator variant="solid" borderColor="black" my={1} />
 
-        <Text fontSize="xs" color="black" mt={1}>
-          Please keep this bill for your records.
+        <Flex justify="space-between" fontWeight="bold" fontSize="sm">
+          <Text>Net Amount:</Text>
+          <Text>Rs. {sale.finalTotal.toFixed(2)}</Text>
+        </Flex>
+      </Stack>
+
+      <Separator variant="dashed" borderColor="black" my={2} />
+
+      {/* 5. Footer */}
+      <Stack gap={1} textAlign="center" fontSize="2xs" mt={3}>
+        <Text fontWeight="semibold">
+          Thank you for trusting Abdullah Pharmacy!
         </Text>
-      </Box>
+        <Text>
+          * Items returned/exchanged within 7 days with original invoice.
+        </Text>
+        <Text>* Refrigerated / Cold-chain items are non-returnable.</Text>
+        <Text mt={2} fontStyle="italic">
+          Get Well Soon!
+        </Text>
+      </Stack>
     </Box>
   );
 }
