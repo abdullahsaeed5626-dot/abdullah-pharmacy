@@ -495,6 +495,11 @@ This makes the project a practical demonstration of frontend application archite
 
 ---
 
+## Live links & gitHub Repository
+
+![Live Demo](https://abdullah-pharmacy-seven.vercel.app/)
+![GitHub Repo](https://github.com/abdullahsaeed5626-dot/abdullah-pharmacy)
+
 ## 👨‍💻 Author
 
 ## Abdullah Saeed
