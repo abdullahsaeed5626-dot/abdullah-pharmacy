@@ -235,7 +235,13 @@ function Navbar() {
           </IconButton>{" "}
         </Box>{" "}
         {/* Pharmacy Logo + Name */}{" "}
-        <Flex align="center" justifyContent="center" gap={2} minWidth={0}>
+        <Flex
+          align="center"
+          justifyContent="center"
+          gap={2}
+          minWidth={0}
+          transform="translateX(10px)"
+        >
           {" "}
           <Box
             display="flex"
