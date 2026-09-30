@@ -101,9 +101,7 @@ function Navbar() {
           </Box>{" "}
           <Spacer />
         </Flex>{" "}
-        {/* Right Empty Space */} <Box />{" "}
       </Grid>{" "}
-      {/* Desktop / Laptop Header */}{" "}
       <Flex
         display={{ base: "none", md: "flex" }}
         align="center"
