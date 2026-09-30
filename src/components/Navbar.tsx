@@ -234,7 +234,7 @@ function Navbar() {
             <Menu size={22} />{" "}
           </IconButton>{" "}
         </Box>{" "}
-        {/* Pharmacy Logo + Name */}{" "}
+        {/* Mobile Pharmacy Logo + Name */}{" "}
         <Flex
           align="center"
           justifyContent="center"
@@ -281,7 +281,7 @@ function Navbar() {
         </Flex>{" "}
         {/* Right Empty Space */} <Box />{" "}
       </Grid>{" "}
-      {/* Desktop Header */}{" "}
+      {/* Desktop / Laptop Header */}{" "}
       <Flex
         display={{ base: "none", md: "flex" }}
         align="center"
@@ -289,7 +289,7 @@ function Navbar() {
         minH="50px"
       >
         {" "}
-        <Flex align="center" gap={3}>
+        <Flex align="center" gap={4}>
           {" "}
           <Box
             display="flex"
@@ -297,16 +297,18 @@ function Navbar() {
             justifyContent="center"
             bg="white"
             borderRadius="12px"
-            width="42px"
-            height="42px"
+            width="46px"
+            height="46px"
           >
             {" "}
-            <Pill size={23} color="black" />{" "}
+            <Pill size={25} color="black" />{" "}
           </Box>{" "}
           <Box>
             {" "}
-            <Heading size="md">Abdullah Pharmacy</Heading>{" "}
-            <Text fontSize="sm" mt={1}>
+            <Heading size="lg" fontSize="x-large">
+              Abdullah Pharmacy
+            </Heading>{" "}
+            <Text fontSize="xlg" mt={1}>
               {" "}
               Medical Store Management System{" "}
             </Text>{" "}
