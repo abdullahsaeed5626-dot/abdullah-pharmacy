@@ -34,12 +34,7 @@ function Navbar() {
       borderBottomWidth="1px"
       borderColor="blue.700"
     >
-      <Flex
-        align="center"
-        position="relative"
-        minH="50px"
-        justifyContent="center"
-      >
+      <Flex align="center" position="relative" minH="50px">
         {/* Mobile Menu Button */}
         <IconButton
           display={{ base: "flex", md: "none" }}
@@ -57,7 +52,12 @@ function Navbar() {
         </IconButton>
 
         {/* Pharmacy Logo + Name */}
-        <Flex align="center" gap={3} width="100%" justify="center">
+        <Flex
+          align="center"
+          gap={3}
+          width="100%"
+          justify={{ base: "space-between", md: "center" }}
+        >
           <Box
             display="flex"
             alignItems="center"
@@ -70,7 +70,7 @@ function Navbar() {
             <Pill size={23} color="black" />
           </Box>
 
-          <Box>
+          <Box marginLeft={{ base: "15px", md: "none" }}>
             <Heading size="md">Abdullah Pharmacy</Heading>
 
             <Text fontSize="sm" mt={1}>
