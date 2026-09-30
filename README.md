@@ -194,6 +194,8 @@ medical-store/
 │
 ├── public/
 │
+├──screenshots
+│
 ├── src/
 │   │
 │   ├── assets/
