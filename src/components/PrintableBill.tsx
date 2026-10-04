@@ -1,4 +1,4 @@
-import { Box, Text, Flex, Stack, Separator, Table } from "@chakra-ui/react";
+import { Box, Text, Flex, Stack, Separator } from "@chakra-ui/react";
 
 export type CartItem = {
   id: string | number;
@@ -28,7 +28,11 @@ type Props = {
 
 function PrintableBill({ sale }: Props) {
   const saleDate = sale.createdAt ? new Date(sale.createdAt) : new Date();
-  const formattedDate = saleDate.toLocaleDateString();
+  const formattedDate = saleDate.toLocaleDateString("en-PK", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
   const formattedTime = saleDate.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
@@ -37,38 +41,44 @@ function PrintableBill({ sale }: Props) {
   return (
     <Box
       className="print-receipt"
-      width={{ base: "100%", md: "80mm" }}
+      width="300px"
       mx="auto"
+      my={4}
       p={4}
       bg="white"
       color="black"
-      fontFamily="mono"
-      fontSize="xs"
+      fontFamily="'Courier New', Courier, monospace"
+      fontSize="12px"
+      lineHeight="1.4"
+      border="1px solid"
+      borderColor="gray.300"
+      borderRadius="sm"
+      boxShadow="sm"
     >
-      {/* 1. Header & Store Info */}
-      <Stack gap={1} textAlign="center" mb={3}>
-        <Text fontSize="md" fontWeight="bold" textTransform="uppercase">
+      {/* 1. Store Header */}
+      <Stack gap={0.5} textAlign="center" mb={2}>
+        <Text fontSize="15px" fontWeight="bold" textTransform="uppercase">
           Abdullah Pharmacy
         </Text>
-        <Text fontSize="2xs">
+        <Text fontSize="10px">
           Main Commercial Market, Sector G-9, Islamabad
         </Text>
-        <Text fontSize="2xs">Phone: +92 307 8029162 | Reg #: PH-89421</Text>
-        <Text fontSize="2xs" fontWeight="semibold" mt={1}>
+        <Text fontSize="10px">Phone: +92 307 8029162 | Reg #: PH-89421</Text>
+        <Text fontSize="10px" fontWeight="bold" mt={1}>
           CASH RECEIPT / TAX INVOICE
         </Text>
       </Stack>
 
-      <Separator variant="dashed" borderColor="black" my={2} />
+      <Separator variant="dashed" borderColor="black" my={1.5} />
 
-      {/* 2. Transaction Meta Info */}
-      <Stack gap={1} mb={2}>
+      {/* 2. Customer & Bill Meta */}
+      <Stack gap={0.5} mb={2} fontSize="11px">
         <Flex justify="space-between">
           <Text fontWeight="bold">Invoice #:</Text>
-          <Text>{sale.id}</Text>
+          <Text fontWeight="bold">#{sale.id}</Text>
         </Flex>
         <Flex justify="space-between">
-          <Text>Date:</Text>
+          <Text>Date & Time:</Text>
           <Text>
             {formattedDate} {formattedTime}
           </Text>
@@ -91,91 +101,81 @@ function PrintableBill({ sale }: Props) {
         </Flex>
       </Stack>
 
-      <Separator variant="dashed" borderColor="black" my={2} />
+      <Separator variant="dashed" borderColor="black" my={1.5} />
 
-      {/* 3. Itemized Products Table */}
+      {/* 3. Items Table */}
       <Box mb={2}>
-        <Table.Root size="sm" variant="line">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader
-                color="black"
-                fontSize="xs"
-                p={1}
-                textAlign="left"
-              >
-                Item
-              </Table.ColumnHeader>
-              <Table.ColumnHeader
-                color="black"
-                fontSize="xs"
-                p={1}
-                textAlign="center"
-              >
-                Qty
-              </Table.ColumnHeader>
-              <Table.ColumnHeader
-                color="black"
-                fontSize="xs"
-                p={1}
-                textAlign="right"
-              >
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            fontSize: "11px",
+          }}
+        >
+          <thead>
+            <tr style={{ borderBottom: "1px dashed black" }}>
+              <th style={{ textAlign: "left", paddingBottom: "4px" }}>Item</th>
+              <th style={{ textAlign: "center", paddingBottom: "4px" }}>Qty</th>
+              <th style={{ textAlign: "right", paddingBottom: "4px" }}>
                 Price
-              </Table.ColumnHeader>
-              <Table.ColumnHeader
-                color="black"
-                fontSize="xs"
-                p={1}
-                textAlign="right"
-              >
+              </th>
+              <th style={{ textAlign: "right", paddingBottom: "4px" }}>
                 Total
-              </Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
             {sale.cart.map((item) => (
-              <Table.Row key={item.id}>
-                <Table.Cell p={1} verticalAlign="top">
-                  <Text fontWeight="medium" wordBreak="break-word">
+              <tr key={item.id}>
+                <td style={{ paddingTop: "4px", paddingBottom: "4px" }}>
+                  <div style={{ fontWeight: "600", wordBreak: "break-word" }}>
                     {item.name}
-                  </Text>
+                  </div>
                   {(item.batchNo || item.expDate) && (
-                    <Text fontSize="2xs" color="gray.700">
-                      {item.batchNo ? `B: ${item.batchNo} ` : ""}
-                      {item.expDate ? `Exp: ${item.expDate}` : ""}
-                    </Text>
+                    <div style={{ fontSize: "9px", color: "#444" }}>
+                      {item.batchNo ? `B:${item.batchNo} ` : ""}
+                      {item.expDate ? `Exp:${item.expDate}` : ""}
+                    </div>
                   )}
-                </Table.Cell>
-                <Table.Cell
-                  p={1}
-                  textAlign="center"
-                  verticalAlign="top"
-                  fontWeight="medium"
+                </td>
+                <td
+                  style={{
+                    textAlign: "center",
+                    verticalAlign: "top",
+                    paddingTop: "4px",
+                  }}
                 >
                   {item.quantity}
-                </Table.Cell>
-                <Table.Cell p={1} textAlign="right" verticalAlign="top">
+                </td>
+                <td
+                  style={{
+                    textAlign: "right",
+                    verticalAlign: "top",
+                    paddingTop: "4px",
+                  }}
+                >
                   {item.price.toFixed(2)}
-                </Table.Cell>
-                <Table.Cell
-                  p={1}
-                  textAlign="right"
-                  verticalAlign="top"
-                  fontWeight="semibold"
+                </td>
+                <td
+                  style={{
+                    textAlign: "right",
+                    verticalAlign: "top",
+                    paddingTop: "4px",
+                    fontWeight: "bold",
+                  }}
                 >
                   {(item.price * item.quantity).toFixed(2)}
-                </Table.Cell>
-              </Table.Row>
+                </td>
+              </tr>
             ))}
-          </Table.Body>
-        </Table.Root>
+          </tbody>
+        </table>
       </Box>
 
-      <Separator variant="dashed" borderColor="black" my={2} />
+      <Separator variant="dashed" borderColor="black" my={1.5} />
 
-      {/* 4. Calculation Summary */}
-      <Stack gap={1} mb={3}>
+      {/* 4. Calculation Totals */}
+      <Stack gap={1} mb={2} fontSize="11px">
         <Flex justify="space-between">
           <Text>Subtotal:</Text>
           <Text>Rs. {sale.subtotal.toFixed(2)}</Text>
@@ -190,24 +190,20 @@ function PrintableBill({ sale }: Props) {
 
         <Separator variant="solid" borderColor="black" my={1} />
 
-        <Flex justify="space-between" fontWeight="bold" fontSize="sm">
+        <Flex justify="space-between" fontWeight="bold" fontSize="13px">
           <Text>Net Amount:</Text>
           <Text>Rs. {sale.finalTotal.toFixed(2)}</Text>
         </Flex>
       </Stack>
 
-      <Separator variant="dashed" borderColor="black" my={2} />
+      <Separator variant="dashed" borderColor="black" my={1.5} />
 
-      {/* 5. Footer */}
-      <Stack gap={1} textAlign="center" fontSize="2xs" mt={3}>
-        <Text fontWeight="semibold">
-          Thank you for trusting Abdullah Pharmacy!
-        </Text>
-        <Text>
-          * Items returned/exchanged within 7 days with original invoice.
-        </Text>
-        <Text>* Refrigerated / Cold-chain items are non-returnable.</Text>
-        <Text mt={2} fontStyle="italic">
+      {/* 5. Medical Disclaimers & Footer */}
+      <Stack gap={0.5} textAlign="center" fontSize="9px" mt={2}>
+        <Text fontWeight="bold">Thank you for visiting Abdullah Pharmacy!</Text>
+        <Text>* Exchange/Return allowed within 7 days with bill.</Text>
+        <Text>* Cold chain (refrigerated) medicines are non-returnable.</Text>
+        <Text fontStyle="italic" mt={1}>
           Get Well Soon!
         </Text>
       </Stack>

@@ -109,27 +109,41 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
-@media print {
-  body {
-    background: #fff !important;
-    color: #000 !important;
-  }
+/* Guaranteed Thermal Print Rules */
+/* Printable Receipt Reset */
+.print-receipt {
+  box-sizing: border-box !important;
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
 
-  /* Hide everything marked no-print */
-  .no-print {
+@media print {
+  /* Hide UI elements while printing */
+  .no-print,
+  nav,
+  aside,
+  header {
     display: none !important;
   }
 
-  /* Thermal Receipt Page Dimensions */
+  /* Reset page for receipt printing */
+  body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   @page {
-    size: 80mm auto; /* Standard thermal receipt size (80mm width) */
-    margin: 0;
+    size: 80mm auto;
+    margin: 0mm;
   }
 
   .print-receipt {
-    width: 80mm !important;
-    padding: 8mm !important;
+    width: 78mm !important;
+    max-width: 78mm !important;
     margin: 0 auto !important;
-    font-family: 'Courier New', Courier, monospace, sans-serif !important;
+    padding: 4mm !important;
+    border: none !important;
+    box-shadow: none !important;
   }
 }
